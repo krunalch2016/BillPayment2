@@ -1,0 +1,156 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <style>
+        <style>
+        #tbl {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+           
+        }
+        #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+       .txtbox{
+            width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+ 
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 8px 20px 8px 25px;
+       
+        }
+    </style>
+
+    
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submit').click(function (e) {
+              //  var sessionValue = $("#sub").data('value');
+
+                var Customer = {};
+
+                Customer.MobileNumber = $('#txtMobileNumber').val();
+
+                Customer.ConfirmPassword = $('#txtpassword').val();
+
+                $.ajax({
+                    url: 'http://localhost:52960/api/PaymentWeb/Login',
+                    type: 'POST',
+                    dataType: 'json',
+                    //contentType: "application/json; charset=utf-8",
+                    data: Customer,
+
+                    success: function (data)
+                    {
+                        if(data>0)
+                        {
+                           
+                            sessionStorage.setItem("MobileID", Customer.MobileNumber);
+                            $(location).attr('href', 'http://localhost:52960/PaymentMVC/PostPaid');
+                        }
+                        else if(data==0)
+                        {
+                           
+                            sessionStorage.setItem("MobileID", Customer.MobileNumber);
+                            $(location).attr('href', 'http://localhost:52960/PaymentMVC/PrePaidView');
+
+                        }
+                        else {
+                            alert("Login Fail")
+                           
+                        }
+
+                    },
+                    error: function (message)
+                    {
+                        alert("Error")
+
+                    }
+                });
+
+                e.preventDefault();
+            });
+        });
+
+
+
+    </script>
+</head>
+<body>
+    <div> 
+        <center>
+            @using (Html.BeginForm("Login", "PaymentMVC"))
+            {
+                <table>
+                    <tr><td><h2>Login Here</h2><br /></td></tr>
+                    <tr>
+                        <td> @Html.Label("MobileNumber")</td>
+                        <td>
+                            @Html.TextBox("txtMobileNumber", "", new { @class = "txtbox" })
+                        </td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblMobileNumber" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "label" })</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td> @Html.Label("Password")</td>
+                        <td>
+                            @Html.Password("txtpassword", "", new { title = "Must contain at least one number and one uppercase and lowercase letter, and atmost 8 characters", @class = "txtbox" })
+                        </td>
+                        <td style="color:purple;">   @Html.Label(" ", new { @id = "lblpassword" })</td>
+                    </tr>
+                    <tr>
+
+                        <td>  <input type="submit" id="submit" onclick="return LoginValidation(txtMobileNumber, lblMobileNumber, txtpassword, lblpassword);" value="Login" /></td>
+
+                        <td>
+                            <a>@Html.ActionLink("ForgotPassword", "ForgotPasswordView", "PaymentMVC")</a><br />
+                            <a>@Html.ActionLink("New User", "Register", "PaymentMVC")</a>
+                        </td>
+
+
+                    </tr>
+
+                </table>
+                @*<input type="hidden" id="hdnsession" data-value="@Request.RequestContext.HttpContext.Session["MobileNumber"]" />*@
+                <br /><Br />
+            }
+        </center> 
+</div>
+</body>
+</html>

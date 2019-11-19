@@ -1,0 +1,427 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BillPaymentModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="debit_creditcard_table">
+          <Key>
+            <PropertyRef Name="CardNumber" />
+          </Key>
+          <Property Name="CardNumber" Type="bigint" Nullable="false" />
+          <Property Name="CVVNumber" Type="int" />
+          <Property Name="ExpiryDate" Type="varchar" MaxLength="50" />
+          <Property Name="AccountHolderName" Type="varchar" MaxLength="50" />
+          <Property Name="BankName" Type="varchar" MaxLength="50" />
+          <Property Name="UserID" Type="varchar" MaxLength="50" />
+          <Property Name="UserPassword" Type="int" />
+          <Property Name="Balance" Type="decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="Operator_Table1">
+          <Key>
+            <PropertyRef Name="Operator" />
+            <PropertyRef Name="MRP" />
+            <PropertyRef Name="ValidateDays" />
+            <PropertyRef Name="Descriptions" />
+            <PropertyRef Name="Roaming" />
+            <PropertyRef Name="SMS" />
+            <PropertyRef Name="DataSpeed" />
+          </Key>
+          <Property Name="Operator" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MRP" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ValidateDays" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descriptions" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Roaming" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SMS" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DataSpeed" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PostPaids">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="MobileNumber" Type="bigint" Nullable="false" />
+          <Property Name="Operator" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PrePaids">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="MobileNumber" Type="bigint" Nullable="false" />
+          <Property Name="Operator" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="table_Login">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="MobileNumber" Type="bigint" Nullable="false" />
+          <Property Name="ConfirmPassword" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="table_Registration">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MobileNumber" Type="bigint" Nullable="false" />
+          <Property Name="EmailID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Plantype" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SecurityQuestion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SecurityAnswer" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="NewPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ConfirmPassword" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Operator" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MobileNumber" Type="bigint" Nullable="false" />
+          <Property Name="PlantType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Operator" Type="varchar" MaxLength="50" />
+          <Property Name="Amount" Type="decimal" Precision="19" Scale="4" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__PostPaid__Mobile__534D60F1">
+          <End Role="table_Registration" Type="Self.table_Registration" Multiplicity="1" />
+          <End Role="PostPaids" Type="Self.PostPaids" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="PostPaids">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PrePaid__MobileN__5441852A">
+          <End Role="table_Registration" Type="Self.table_Registration" Multiplicity="1" />
+          <End Role="PrePaids" Type="Self.PrePaids" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="PrePaids">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__table_Log__Mobil__5535A963">
+          <End Role="table_Registration" Type="Self.table_Registration" Multiplicity="1" />
+          <End Role="table_Login" Type="Self.table_Login" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="table_Login">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__User_Tran__Mobil__4BAC3F29">
+          <End Role="table_Registration" Type="Self.table_Registration" Multiplicity="1" />
+          <End Role="User_Transaction" Type="Self.User_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="User_Transaction">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BillPaymentModelStoreContainer">
+          <EntitySet Name="debit_creditcard_table" EntityType="Self.debit_creditcard_table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Operator_Table1" EntityType="Self.Operator_Table1" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostPaids" EntityType="Self.PostPaids" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrePaids" EntityType="Self.PrePaids" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table_Login" EntityType="Self.table_Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="table_Registration" EntityType="Self.table_Registration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Transaction" EntityType="Self.User_Transaction" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__PostPaid__Mobile__534D60F1" Association="Self.FK__PostPaid__Mobile__534D60F1">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="PostPaids" EntitySet="PostPaids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PrePaid__MobileN__5441852A" Association="Self.FK__PrePaid__MobileN__5441852A">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="PrePaids" EntitySet="PrePaids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__table_Log__Mobil__5535A963" Association="Self.FK__table_Log__Mobil__5535A963">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="table_Login" EntitySet="table_Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK__User_Tran__Mobil__4BAC3F29" Association="Self.FK__User_Tran__Mobil__4BAC3F29">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="User_Transaction" EntitySet="User_Transaction" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BillPaymentModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="debit_creditcard_table">
+          <Key>
+            <PropertyRef Name="CardNumber" />
+          </Key>
+          <Property Name="CardNumber" Type="Int64" Nullable="false" />
+          <Property Name="CVVNumber" Type="Int32" />
+          <Property Name="ExpiryDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AccountHolderName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="Int32" />
+          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="table_Registration">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MobileNumber" Type="Int64" Nullable="false" />
+          <Property Name="EmailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Plantype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SecurityQuestion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SecurityAnswer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NewPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ConfirmPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PostPaid" Relationship="BillPaymentModel.FK__PostPaid__Mobile__534D60F1" FromRole="table_Registration" ToRole="PostPaid" />
+          <NavigationProperty Name="PrePaid" Relationship="BillPaymentModel.FK__PrePaid__MobileN__5441852A" FromRole="table_Registration" ToRole="PrePaid" />
+          <NavigationProperty Name="table_Login" Relationship="BillPaymentModel.FK__table_Log__Mobil__5535A963" FromRole="table_Registration" ToRole="table_Login" />
+          <NavigationProperty Name="User_Transaction" Relationship="BillPaymentModel.FK__User_Tran__Mobil__4BAC3F29" FromRole="table_Registration" ToRole="User_Transaction" />
+        </EntityType>
+        <EntityType Name="Operator_Table1">
+          <Key>
+            <PropertyRef Name="Operator" />
+            <PropertyRef Name="MRP" />
+            <PropertyRef Name="ValidateDays" />
+            <PropertyRef Name="Descriptions" />
+            <PropertyRef Name="Roaming" />
+            <PropertyRef Name="SMS" />
+            <PropertyRef Name="DataSpeed" />
+          </Key>
+          <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MRP" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ValidateDays" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descriptions" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Roaming" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SMS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DataSpeed" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="BillPaymentEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="debit_creditcard_table" EntityType="Self.debit_creditcard_table" />
+          <EntitySet Name="table_Registration" EntityType="Self.table_Registration" />
+          <EntitySet Name="Operator_Table1" EntityType="Self.Operator_Table1" />
+          <EntitySet Name="PostPaids" EntityType="BillPaymentModel.PostPaid" />
+          <AssociationSet Name="FK__PostPaid__Mobile__534D60F1" Association="BillPaymentModel.FK__PostPaid__Mobile__534D60F1">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="PostPaid" EntitySet="PostPaids" />
+          </AssociationSet>
+          <EntitySet Name="PrePaids" EntityType="BillPaymentModel.PrePaid" />
+          <EntitySet Name="table_Login" EntityType="BillPaymentModel.table_Login" />
+          <AssociationSet Name="FK__PrePaid__MobileN__5441852A" Association="BillPaymentModel.FK__PrePaid__MobileN__5441852A">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="PrePaid" EntitySet="PrePaids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__table_Log__Mobil__5535A963" Association="BillPaymentModel.FK__table_Log__Mobil__5535A963">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="table_Login" EntitySet="table_Login" />
+          </AssociationSet>
+          <EntitySet Name="User_Transaction" EntityType="BillPaymentModel.User_Transaction" />
+          <AssociationSet Name="FK__User_Tran__Mobil__4BAC3F29" Association="BillPaymentModel.FK__User_Tran__Mobil__4BAC3F29">
+            <End Role="table_Registration" EntitySet="table_Registration" />
+            <End Role="User_Transaction" EntitySet="User_Transaction" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="PostPaid">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="MobileNumber" Type="Int64" Nullable="false" />
+          <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="table_Registration" Relationship="BillPaymentModel.FK__PostPaid__Mobile__534D60F1" FromRole="PostPaid" ToRole="table_Registration" />
+        </EntityType>
+        <Association Name="FK__PostPaid__Mobile__534D60F1">
+          <End Type="BillPaymentModel.table_Registration" Role="table_Registration" Multiplicity="1" />
+          <End Type="BillPaymentModel.PostPaid" Role="PostPaid" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="PostPaid">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PrePaid">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="MobileNumber" Type="Int64" Nullable="false" />
+          <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="table_Registration" Relationship="BillPaymentModel.FK__PrePaid__MobileN__5441852A" FromRole="PrePaid" ToRole="table_Registration" />
+        </EntityType>
+        <EntityType Name="table_Login">
+          <Key>
+            <PropertyRef Name="MobileNumber" />
+          </Key>
+          <Property Name="MobileNumber" Type="Int64" Nullable="false" />
+          <Property Name="ConfirmPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="table_Registration" Relationship="BillPaymentModel.FK__table_Log__Mobil__5535A963" FromRole="table_Login" ToRole="table_Registration" />
+        </EntityType>
+        <Association Name="FK__PrePaid__MobileN__5441852A">
+          <End Type="BillPaymentModel.table_Registration" Role="table_Registration" Multiplicity="1" />
+          <End Type="BillPaymentModel.PrePaid" Role="PrePaid" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="PrePaid">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__table_Log__Mobil__5535A963">
+          <End Type="BillPaymentModel.table_Registration" Role="table_Registration" Multiplicity="1" />
+          <End Type="BillPaymentModel.table_Login" Role="table_Login" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="table_Login">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="User_Transaction">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNumber" Type="Int64" Nullable="false" />
+          <Property Name="PlantType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Operator" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="table_Registration" Relationship="BillPaymentModel.FK__User_Tran__Mobil__4BAC3F29" FromRole="User_Transaction" ToRole="table_Registration" />
+        </EntityType>
+        <Association Name="FK__User_Tran__Mobil__4BAC3F29">
+          <End Type="BillPaymentModel.table_Registration" Role="table_Registration" Multiplicity="1" />
+          <End Type="BillPaymentModel.User_Transaction" Role="User_Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="table_Registration">
+              <PropertyRef Name="MobileNumber" />
+            </Principal>
+            <Dependent Role="User_Transaction">
+              <PropertyRef Name="MobileNumber" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BillPaymentModelStoreContainer" CdmEntityContainer="BillPaymentEntities">
+          <EntitySetMapping Name="debit_creditcard_table">
+            <EntityTypeMapping TypeName="BillPaymentModel.debit_creditcard_table">
+              <MappingFragment StoreEntitySet="debit_creditcard_table">
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="CVVNumber" ColumnName="CVVNumber" />
+                <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+                <ScalarProperty Name="AccountHolderName" ColumnName="AccountHolderName" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table_Registration">
+            <EntityTypeMapping TypeName="BillPaymentModel.table_Registration">
+              <MappingFragment StoreEntitySet="table_Registration">
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="Plantype" ColumnName="Plantype" />
+                <ScalarProperty Name="SecurityQuestion" ColumnName="SecurityQuestion" />
+                <ScalarProperty Name="SecurityAnswer" ColumnName="SecurityAnswer" />
+                <ScalarProperty Name="NewPassword" ColumnName="NewPassword" />
+                <ScalarProperty Name="ConfirmPassword" ColumnName="ConfirmPassword" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Operator_Table1">
+            <EntityTypeMapping TypeName="BillPaymentModel.Operator_Table1">
+              <MappingFragment StoreEntitySet="Operator_Table1">
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="MRP" ColumnName="MRP" />
+                <ScalarProperty Name="ValidateDays" ColumnName="ValidateDays" />
+                <ScalarProperty Name="Descriptions" ColumnName="Descriptions" />
+                <ScalarProperty Name="Roaming" ColumnName="Roaming" />
+                <ScalarProperty Name="SMS" ColumnName="SMS" />
+                <ScalarProperty Name="DataSpeed" ColumnName="DataSpeed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="table_Login">
+            <EntityTypeMapping TypeName="BillPaymentModel.table_Login">
+              <MappingFragment StoreEntitySet="table_Login">
+                <ScalarProperty Name="ConfirmPassword" ColumnName="ConfirmPassword" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrePaids">
+            <EntityTypeMapping TypeName="IsTypeOf(BillPaymentModel.PrePaid)">
+              <MappingFragment StoreEntitySet="PrePaids">
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostPaids">
+            <EntityTypeMapping TypeName="IsTypeOf(BillPaymentModel.PostPaid)">
+              <MappingFragment StoreEntitySet="PostPaids">
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Transaction">
+            <EntityTypeMapping TypeName="BillPaymentModel.User_Transaction">
+              <MappingFragment StoreEntitySet="User_Transaction">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
+                <ScalarProperty Name="PlantType" ColumnName="PlantType" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,144 @@
+﻿@using System.Collections;
+@model Payment.Models.LoginModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutPrePaid.cshtml";
+
+    var operatorList = new List<SelectListItem>()//var or List<SelectListItem>
+{
+new SelectListItem() {Text="Airtel",Value="Airtel" },
+new SelectListItem() {Text="Jio",Value="Jio" },
+new SelectListItem() {Text="BSNL",Value="BSNL" },
+new SelectListItem() {Text="Vodafone",Value="Vodafone" }
+
+};
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PrePaidView</title>
+    <style>
+           .txtbox{
+            width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+ 
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 8px 20px 8px 25px;
+       }
+        #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if (sessionStorage.MobileID) {
+            $('#submit').click(function () {
+                $('#tblUsers tbody').empty();
+                MobileOperator = $('#dllOperator').val();
+                MobileNumber = $('#txtMobileNumber').val();
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:52960/api/PaymentWeb/GetDetails",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: { "MobileOperator": MobileOperator, "MobileNumber": MobileNumber },
+
+                    success: function (data) {
+                        if (data != null)
+                        {
+                            var headers = "<tr>" +
+                            "<th>" + "Operator" +
+                            "</th>" +
+                            "<th>" + "MRP" + "</th>" +
+                            "<th>" + "ValidateDays" + "</th>" +
+                            "<th>" + "Descriptions" + "</th>" +
+                            "<th>" + "Roaming" + "</th>" +
+                            "<th>" + "SMS" + "</th>" +
+                            "<th>" + "DataSpeed" + "</th>" +
+                            "<th>" + "Amount" + "</th>" +
+                            "</tr>";
+                            $('#tblUsers tbody').append(headers);
+                            $.each(data, function (i, details) {
+                                var rows = "<tr>"
+                                + "<td >" + details.Operator + "</td>"
+                                + "<td >" + details.MRP + "</td>"
+                                + "<td >" + details.ValidateDays + "</td>"
+                                + "<td >" + details.Descriptions + "</td>"
+                                + "<td >" + details.Roaming + "</td>"
+                                + "<td >" + details.SMS + "</td>"
+                                + "<td >" + details.DataSpeed + "</td>"
+                                + "<td> <button class='but1'> RS." + details.MRP + "</button> </td>"
+                                $('.but1').click(function () {
+                                    $(location).attr('href', 'http://localhost:52960/PaymentMVC/Pay');
+                                });
+                                + "</tr>";
+                                //var button = $("<button>90</button>");
+                                $('#tblUsers tbody').append(rows);
+                            });
+                        }
+                        else
+                        {
+                            alert("FAIL")
+                        }
+                        //$('#tblUsers rows').append(button);
+
+
+                    },
+                    error: function (data) {
+                        alert("Error");
+                    }
+                });
+            });
+        }
+else
+{
+                $(location).attr('href', 'http://localhost:52960/PaymentMVC/Login');
+                
+}
+});
+　
+    </script>
+    </head>
+<body>
+    <div>
+        <h1 style="font-size:26px;">PrePaid</h1><br />
+
+        <center>
+            <table>
+                <tr>
+                    <td>
+                        @Html.Label("MobileNumber")
+                    </td>
+                    <td>@Html.TextBox("txtMobileNumber", " ", new { @class = "txtbox" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Operator")</td>
+                    <td>@Html.DropDownList("dllOperator", operatorList, "SelectOperator", new { @class = "txtbox" })</td>
+                </tr>
+
+                <tr>
+                    <td><br /><input type="submit" id="submit" @*onclick="return Validation();"*@ value="Get Plans" /></td>
+                </tr>
+            </table>
+        </center>
+    </div>
+</body>
+</html>

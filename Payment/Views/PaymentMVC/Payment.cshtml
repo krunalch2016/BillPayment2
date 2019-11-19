@@ -1,0 +1,144 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPrePaidPlan.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Payment</title>
+    <style>
+       .txtbox{
+            width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+ 
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 8px 20px 8px 25px;
+       }
+          #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+          label{
+              font-size:18px;
+          }
+    </style>
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+  
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submit').click(function (e) {
+                var Customer = {};
+                Customer.CardNumber = $('#txtCardNumber').val();
+                Customer.CVVNumber = $('#txtCvvNumber').val();
+                Customer.ExpiryDate = $('#txtExpiryDate').val();
+                Customer.AccountHolderName = $('#txtAccountHolderName').val();
+                Customer.Amount = $('#txtAmount').val();
+                Customer.PaymentMethod = 1;
+                $.ajax({
+                    url: 'http://localhost:52960/api/PaymentWeb/MakePayment',
+                    type: 'POST',
+                    dataType: 'json',
+                    //contentType: "application/json; charset=utf-8",
+                    data: Customer,
+                    success: function (data)
+                    {
+                        if (data > 0) {
+                            alert("Payment Success");
+                            $(location).attr('href', 'http://localhost:52960/PaymentMVC/IndexView');
+                        }
+                        else
+                        {
+                            alert("Payment Fail")
+                        }
+                    },
+                    error: function (data)
+                    {
+                        alert("Give Proper Details");
+                    }
+                });
+                //$(location).attr('href', 'https://www.c-sharpcorner.com/UploadFile/abhikumarvatsa/various-ways-to-pass-data-from-controller-to-view-in-mvc/');
+                //e.preventDefault();
+            });
+
+        });
+    </script>
+    <script>
+        function validate()
+        {
+            sessionStorage.MobileID = 0;
+            window.location.href = "http://localhost:52960/PaymentMVC/Login";
+        }
+    </script>
+</head>
+<body>
+    <div> 
+      
+            <center>
+                <h1 style="font-size:26px;">Card Details</h1>
+               
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("CardNumber")
+                        </td>
+                        <td>@Html.TextBox("txtCardNumber", "", new { onchange = "return CardNumberValidation(txtCardNumber,lblCardNumber);", @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblCardNumber" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("CVVNumber")
+                        </td>
+                        <td>@Html.Password("txtCvvNumber", "", new { onchange = "return CvvNumberValidation(txtCvvNumber,lblCvvNumber);", @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblCvvNumber" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("ExpiryDate")
+                        </td>
+                        <td>@Html.TextBox("txtExpiryDate", "", new { onchange = "return ExpiryDateValidation(txtExpiryDate,lblExpiryDate)", @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblExpiryDate" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("AccountHolderName")
+                        </td>
+                        <td>@Html.TextBox("txtAccountHolderName", "", new { onchange = "return AccountHolderNameValidation(txtAccountHolderName,lblAccountHolderName);", @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblAccountHolderName" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Amount")
+                        </td>
+                        <td>@Html.TextBox("txtAmount", "", new { onchange = "return AmountValidation(txtAmount,lblAmount);", @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblAmount" })</td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td>
+                            <br /><input type="submit" onclick="return CardDetailsValidation(txtCardNumber, lblCardNumber, txtCvvNumber, lblCvvNumber, txtExpiryDate, lblExpiryDate,txtAccountHolderName, lblAccountHolderName,txtAmount,lblAmount);" value="Payment" id="submit" />
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        
+    </div>
+</body>
+</html>

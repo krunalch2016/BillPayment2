@@ -1,0 +1,64 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPayment.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Pay</title>
+    <style>
+        #tbl {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        #h3{
+          font-size:25px; 
+          margin-top:0px;
+        }
+    </style>
+    <script>
+        function validate()
+        {
+            sessionStorage.MobileID = 0;
+            window.location.href = "http://localhost:52960/PaymentMVC/Login";
+        }
+    </script>
+</head>
+<body>
+    <div> 
+      
+        @using (Html.BeginForm("Pay", "PaymentMVC"))
+        {
+            <br /><br /><br /><br />
+            <h3 id="h3" >Card Details</h3>
+
+            <form id="tbl">
+                <a>@Html.ActionLink("Debit / Credit Card", "Payment", "PaymentMVC", new { id = "submit" })</a><br />
+                <a>@Html.ActionLink("Internet Banking", "NetBanking", "PaymentMVC", new { id = "submit" })</a>
+            </form><br /><br />
+            <br />}
+    </div>
+</body>
+</html>

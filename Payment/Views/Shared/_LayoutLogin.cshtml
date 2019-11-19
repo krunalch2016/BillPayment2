@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    
+    <style>
+        .header {
+            overflow: hidden;
+            background-color: purple;
+            padding: 20px 10px;
+        }
+
+            .header a {
+                float: left;
+                color: white;
+                text-align: center;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 20px;
+                line-height: 25px;
+                border-radius: 4px;
+            }
+
+                .header a.logo {
+                    font-size: 25px;
+                    font-weight: bold;
+                }
+
+                .header a:hover {
+                    background-color: black;
+                    color: white;
+                }
+
+
+
+
+
+        @@media screen and (max-width: 500px) {
+            .header a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+        }
+           #FooterLayout {
+          margin-top:80px;
+            border: 2px solid purple;
+            text-align: center;
+            background-color: purple;
+        }
+           #left{
+                font-size:20px;
+            font-family:'Bell MT';
+             
+           }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="http://localhost:52960/PaymentMVC/IndexView" class="logo"><img src="~/Images/logo.jpg" width="200" height="65" /></a>
+
+    </div><br /><br />
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-3">
+            </div>
+
+            <div class="col-sm-6" id="left">@RenderBody() </div>
+
+            <div class="col-sm-3">
+            </div>
+
+        </div>
+    </div>
+    <div id="FooterLayout">
+        <p style="color:lightgray;">Copyright@Airphone by Team</p>
+    </div>
+</body>
+</html>

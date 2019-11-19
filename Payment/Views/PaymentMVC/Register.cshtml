@@ -1,0 +1,169 @@
+﻿@using System.Collections
+@{
+    Layout = "~/Views/Shared/_LayoutRegister.cshtml";
+    var QuestionsList = new List<SelectListItem>() {
+        new SelectListItem() {Text="Your first school name",Value="schoolname"},
+        new SelectListItem() {Text="Your Favourite color",Value="color"},
+        new SelectListItem() {Text="Your pet name",Value="pet"}
+    };
+    var OperatorsList = new List<SelectListItem>() {
+        new SelectListItem() {Text="Airtel",Value="Airtel"},
+        new SelectListItem() {Text="BSNL",Value="BSNL"},
+        new SelectListItem() {Text="Vodafone",Value="Vodafone"},
+        new SelectListItem() {Text="Jio",Value="Jio"}
+
+    };
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Register</title>
+    <style>
+ 
+          .txtbox{
+            width: 90%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 2px 2px 2px 2px; 
+       }
+           #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+   
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submit').click(function (e) {
+                jQuery.support.cors = true;
+                var Customer = {};
+                Customer.CustomerName = $('#txtUserName').val();
+                Customer.MobileNumber = $('#txtMobileNumber').val();
+                Customer.EmailId = $('#txtemail').val();
+                Customer.Plantype = $('[name=plan]:checked').val();
+                Customer.SecurityQuestion = $('#Questions').val();
+                Customer.SecurityAnswer = $('#txtSecurityAnswer').val();
+                Customer.NewPassword = $('#txtpassword').val();
+                Customer.ConfirmPassword = $('#txtConfirmPassword').val();
+                Customer.Operator = $('#Operatorlist').val();
+
+                //alert("Your Name is \n" + Customer.CustomerName + "Mobile " + Customer.MobileNumber + " " + Customer.EmailId + " " + Customer.Plantype + " " + Customer.SecurityQuestion + " " + Customer.SecurityAnswer + " " + Customer.NewPassword + " " + Customer.ConfirmPassword + " " + Customer.Operator);
+                $.ajax({
+                    url: 'http://localhost:52960/api/PaymentWeb/Register',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: Customer,
+                    success: function (data) {
+                        if (data > 0) {                          
+                            alert("Successfully Registered")
+                            $(location).attr('href', 'http://localhost:52960/PaymentMVC/Login');
+                        }
+                        else
+                        {
+                            alert("Registration Failed")
+                        }
+
+                    },
+                    error: function (data) {
+
+                        alert("Invalid Registration")
+                    }
+                });
+                e.preventDefault();
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div> 
+@using (Html.BeginForm("Register", "PaymentMVC"))
+{
+    <center>
+        <h3 id="h3">Register Here</h3>
+
+    </center>
+
+        <table id="table">
+            <tr>
+                <td>@Html.Label("UserName")</td>
+                <td>@Html.TextBox("txtUserName", "", new { onchange = "return UserNameValidation(txtUserName,lblUserName);", @class = "txtbox" })</td>
+                <td style="color:purple;">@Html.Label(" ", new { @id = "lblUserName" })</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Mobile Number")</td>
+                <td>@Html.TextBox("txtMobileNumber", "", new { onchange = "return MobileNumberValidation(txtMobileNumber,lblMobileNumber);", @class = "txtbox" })</td>
+                <td style="color:purple;">@Html.Label(" ", new { @id = "lblMobileNumber" })</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Email id")</td>
+                <td>@Html.TextBox("txtemail", "", new { type = "email", placeholder = "example@gmail.com", @class = "txtbox", onchange = "return EmailIDValidation(txtemail,lblEmailID);" })</td>
+                <td style="color:purple;">@Html.Label(" ", new { @id = "lblEmailID" })</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Choose Plan Type")</td>
+                <td>
+                    PrePaid @Html.RadioButton("plan", "Prepaid")
+                    PostPaid @Html.RadioButton("plan", "Postpaid")
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Choose Security Question")</td>
+                <td>@Html.DropDownList("Questions", QuestionsList, "---Select One---", new { @class = "txtbox" })</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Security Answer")</td>
+                <td>@Html.TextBox("txtSecurityAnswer", "", new { onchange = "return SecurityAnswerValidation(txtSecurityAnswer,lblSecurityAnswer);", @class = "txtbox" })</td>
+                <td style="color:purple;">@Html.Label(" ", new { @id = "lblSecurityAnswer" })</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Create Password")</td>
+                <td>@Html.Password("txtpassword", "", new { onchange = "return PasswordValidation(txtpassword,lblpassword);", @class = "txtbox" })</td>
+                <td style="color:purple;">@Html.Label(" ", new { @id = "lblpassword" })</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Confirm Password")</td>
+                <td>@Html.Password("txtConfirmPassword", "", new { @class = "txtbox" })</td>
+                @*<td style="color:purple;">@Html.Label(" ", new { @id = "lblConfirmPassword" })</td>*@
+            </tr>
+            <tr>
+                <td>@Html.Label("Operator")</td>
+                <td>@Html.DropDownList("Operatorlist", OperatorsList, "---Select One---", new { @class = "txtbox" })<br /></td>
+
+            </tr>
+            <tr>
+                @*<td><input type="checkbox" name="checkbox" value="check" />Check and Accept Details</td>*@
+                <td></td>
+                <td><input type="submit" id="submit"  onclick="return RegisterValidation(txtUserName, lblUserName, txtMobileNumber, lblMobileNumber, txtemail, lblEmailID,txtSecurityAnswer, lblSecurityAnswer, txtpassword, lblpassword);" value="Register" /></td>
+
+            </tr>
+
+        </table>
+}
+    </div>
+</body>
+</html>

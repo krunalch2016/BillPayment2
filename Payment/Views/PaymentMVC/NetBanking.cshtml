@@ -1,0 +1,141 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPayment.cshtml";
+    var BankNameList = new List<SelectListItem>()//var or List<SelectListItem>
+    {
+        new SelectListItem() {Text="HDFC",Value="HDFC" },
+        new SelectListItem() {Text="Axis",Value="Axis" },
+        new SelectListItem() {Text="KVB",Value="KVB" },
+        new SelectListItem() {Text="SBI",Value="SBI" }
+    };
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>NetBanking</title>
+    <style>
+       .txtbox{
+            width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+ 
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 8px 20px 8px 25px;
+       }
+         #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+           label{
+              font-size:18px;
+        }
+    </style>
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#submit').click(function (e) {
+                var Customer = {};
+                Customer.UserID = $('#txtUserID').val();
+                Customer.UserPassword = $('#txtpassword').val();
+                Customer.BankName = $('#txtbankname').val();
+                Customer.Amount = $('#txtAmount').val();
+                Customer.PaymentMethod = 0;
+                $.ajax({
+                    url: 'http://localhost:52960/api/PaymentWeb/MakePayment',
+                    type: 'POST',
+                    dataType: 'json',
+                    //contentType: "application/json; charset=utf-8",
+                    data: Customer,
+                    success: function (data)
+                    {
+                        if (data > 0)
+                        {
+                            alert("Payment Success")
+                            $(location).attr('href', 'http://localhost:52960/PaymentMVC/IndexView');
+                        }
+                        else {
+                            alert("Payment Fail")
+                        }
+
+                    },
+                    error: function (response)
+                    {
+                        alert("Give Proper Details");
+                    }
+                });
+                //$(location).attr('href', 'https://www.c-sharpcorner.com/UploadFile/abhikumarvatsa/various-ways-to-pass-data-from-controller-to-view-in-mvc/');
+                //e.preventDefault();
+            });
+
+        });
+    </script>
+    <script>
+        function validate()
+        {
+            sessionStorage.MobileID = 0;
+            window.location.href = "http://localhost:52960/PaymentMVC/Login";
+        }
+    </script>
+</head>
+<body>
+    <div> 
+      
+            <center>
+               
+                <h1 style="font-size:26px;">Internet Banking Details</h1>
+                
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("UserID")
+                        </td>
+                        <td>@Html.TextBox("txtUserID", "", new { @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblUserID" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("UserPassword")
+                        </td>
+                        <td>@Html.Password("txtpassword", "", new { @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblpassword" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("BankName")</td>
+                        <td>@Html.DropDownList("txtbankname", BankNameList, "SelectOperator", new { @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblbankname" })</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.Label("Amount")
+                        </td>
+                        <td>@Html.TextBox("txtAmount", "", new { @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblAmount" })</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><br /><br /><input type="submit" value="Payment" onclick="return IBValidation(txtUserID, lblUserID, txtpassword, lblpassword, txtbankname, lblbankname, txtAmount, lblAmount);" id="submit" /></td>
+                    </tr>
+                </table>
+            </center>
+
+        
+    </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <style>
+        .header {
+            overflow: hidden;
+            background-color: purple;
+            padding: 20px 10px;
+        }
+
+            .header a {
+                float: left;
+                color: white;
+                text-align: center;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 20px;
+                line-height: 25px;
+                border-radius: 4px;
+            }
+
+                .header a.logo {
+                    font-size: 25px;
+                    font-weight: bold;
+                }
+
+                .header a:hover {
+                    background-color: black;
+                    color: white;
+                }
+
+                 .header-right {
+            float: right;
+        }
+
+
+
+        @@media screen and (max-width: 500px) {
+            .header a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+             .header-right {
+                float: none;
+            }
+        }
+
+        #FooterLayout {
+            margin-top: 55px;
+            border: 2px solid purple;
+            text-align: center;
+            background-color: purple;
+        }
+          #submit1 {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="http//localhost:52960/PaymentMVC/IndexView" class="logo"><img src="~/Images/logo.jpg" width="200" height="65" /></a>
+        <div class="header-right">
+            <a>@Html.ActionLink("Prepaid", "PrePaidView", "PaymentMVC")</a>
+            <a>@Html.ActionLink("Postpaid", "PostPaid", "PaymentMVC")</a>
+            <a>@Html.ActionLink("AboutUs", "AboutUs", "PaymentMVC")</a>
+            <a>@Html.ActionLink("ContactUs", "ContactUs", "PaymentMVC")</a>
+        
+            <a>@Html.ActionLink("Register", "Register", "PaymentMVC")</a>
+
+        </div>
+    </div><br /><br />
+    <div class="container">
+        <div class="row">
+
+            <div  style="float:right">
+                <input type="submit" value="Logout" id="submit1" onclick="validate()" />
+            </div>
+
+            <div  style="text-align:center;">@RenderBody() </div>
+
+            
+
+        </div>
+    </div>
+    <div id="FooterLayout">
+        <p style="color:lightgray;">Copyright@Airphone by Team</p>
+    </div>
+</body>
+</html>
+

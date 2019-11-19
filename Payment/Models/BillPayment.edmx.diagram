@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7c3360c5baa54d87ab972a208826a0b5" Name="Diagram1">
+        <EntityTypeShape EntityType="BillPaymentModel.debit_creditcard_table" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillPaymentModel.table_Registration" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillPaymentModel.Operator_Table1" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BillPaymentModel.PostPaid" Width="1.5" PointX="5" PointY="4.375" />
+        <AssociationConnector Association="BillPaymentModel.FK__PostPaid__Mobile__534D60F1" />
+        <EntityTypeShape EntityType="BillPaymentModel.PrePaid" Width="1.5" PointX="5" PointY="9.125" />
+        <EntityTypeShape EntityType="BillPaymentModel.table_Login" Width="1.5" PointX="5" PointY="6.75" />
+        <AssociationConnector Association="BillPaymentModel.FK__PrePaid__MobileN__5441852A" />
+        <AssociationConnector Association="BillPaymentModel.FK__table_Log__Mobil__5535A963" />
+        <EntityTypeShape EntityType="BillPaymentModel.User_Transaction" Width="1.5" PointX="5" PointY="12.375" />
+        <AssociationConnector Association="BillPaymentModel.FK__User_Tran__Mobil__4BAC3F29" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

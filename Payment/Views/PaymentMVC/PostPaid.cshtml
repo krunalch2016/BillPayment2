@@ -1,0 +1,124 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutPostPaid.cshtml";
+    var operatorList = new List<SelectListItem>()
+    {
+        new SelectListItem() {Text="Airtel",Value="airtel" },
+        new SelectListItem() {Text="Jio",Value="Jio" },
+        new SelectListItem() {Text="BSNL",Value="BSNL" },
+         new SelectListItem() {Text="Vodafone",Value="Vodafone" }
+    };
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PostPaid</title>
+    <style>
+           
+        .txtbox{
+            width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+ 
+  background-position: 10px 10px; 
+  background-repeat: no-repeat;
+  padding: 8px 20px 8px 25px;
+       }
+        #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+   
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (sessionStorage.MobileID) {
+                $('#submit').click(function (e) {
+
+                    var Customer = {};
+
+                    Customer.MobileNumber = $('#txtMobileNumber').val();
+
+                    Customer.Operator = $('#Operator').val();
+
+
+                    $.ajax({
+                        url: 'http://localhost:52960/api/PaymentWeb/PostPaid',
+                        type: 'POST',
+                        dataType: 'json',
+
+                        data: Customer,
+
+                        success: function (data) {
+                            if (data > 0) {
+                              
+                                $(location).attr('href', 'http://localhost:52960/PaymentMVC/Pay');
+                            }
+                            else {
+                                alert("NotSuccess")
+                            }
+                        },
+                        error: function (message) {
+                            alert("Fail")
+                        }
+                    });
+
+                    e.preventDefault();
+                });
+            }
+            else
+            {
+                $(location).attr('href', 'http://localhost:52960/PaymentMVC/Login');
+                
+            }
+        });
+
+    </script>
+</head>
+<body>
+    <div> 
+        <h1 style="font-size:26px;">PostPaid</h1><br />
+        @using (Html.BeginForm("PostPaid", "PaymentMVC"))
+        {
+            <center>
+                <table>
+                    <tr>
+                        <td>
+                            @Html.Label("MobileNumber")
+                        </td>
+                        <td>@Html.TextBox("txtMobileNumber", "", new { onchange = "return MobileNumberValidation(txtMobileNumber,lblMobileNumber);", @class = "txtbox" })</td>
+                        <td style="color:purple;"> @Html.Label(" ", new { @id = "lblMobileNumber" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Operator")</td>
+                        <td>@Html.DropDownList("Operator", operatorList, "SelectOperator", new { @class = "txtbox" })</td>
+
+                    </tr>                   
+                    <tr>
+                        <td>
+                            <input type="submit" id="submit" onclick="return PostpaidValidation(txtMobileNumber, lblMobileNumber);" value="Pay Now" />
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        }
+    </div>
+</body>
+</html>

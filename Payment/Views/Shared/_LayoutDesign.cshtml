@@ -1,0 +1,127 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+   
+    <title>@ViewBag.Title</title>
+
+    <style>
+        .mySlides {
+            display: none;
+            width: 100%;
+            height: 80%;
+        }
+
+        #FooterLayout {
+          
+            border: 2px solid purple;
+            text-align: center;
+            background-color: purple;
+        }
+
+        .header {
+            overflow: hidden;
+            background-color: purple;
+            padding: 20px 10px;
+        }
+
+            .header a {
+                float: left;
+                color: white;
+                text-align: center;
+                padding: 12px;
+                text-decoration: none;
+                font-size: 20px;
+                line-height: 25px;
+                border-radius: 4px;
+            }
+
+                .header a.logo {
+                    font-size: 25px;
+                    font-weight: bold;
+                }
+
+                .header a:hover {
+                    background-color: black;
+                    color: white;
+                }
+
+
+
+        .header-right {
+            float: right;
+        }
+
+        @@media screen and (max-width: 500px) {
+            .header a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
+
+            .header-right {
+                float: none;
+            }
+        }
+        .container {
+            border-radius: 5px;
+            background-color: white;
+            padding: 5px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="header">
+        <a href="http://localhost:52960/PaymentMVC/IndexView" class="logo"><img src="~/Images/logo.jpg" width="200" height="50" /></a>
+        <div class="header-right">
+          
+            <a>@Html.ActionLink("AboutUs", "AboutUs", "PaymentMVC")</a>
+            <a>@Html.ActionLink("ContactUs", "ContactUs", "PaymentMVC")</a>
+            <a>@Html.ActionLink("Login", "Login", "PaymentMVC")</a>
+            <a>@Html.ActionLink("Register", "Register", "PaymentMVC")</a>
+
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-sm-6 " id="w3-content w3-section">
+                <center> <h1 style="color:purple;font-size:30px;">“The future is exciting. Ready?” </h1></center>
+                <img  class="mySlides" src="~/Images/slide3.jpg" style="width:100%; height:380px;">
+                <img class="mySlides" src="~/Images/slide6.jpg" style="width:100%; height:380px;">
+                <img class="mySlides" src="~/Images/slide4.png" style="width:100%; height:380px;">
+                <img class="mySlides" src="~/Images/slide2.jpg" style="width:100%; height:380px;">
+              
+            </div>
+
+        </div>
+    </div>
+  <div class="menu">
+
+  </div>
+    <div>
+        @RenderBody()
+    </div>
+    <div id="FooterLayout">
+        <p style="color:lightgray;">Copyright@Airphone by Team</p>
+    </div>
+    <script>
+        var myIndex = 0;
+        carousel();
+
+        function carousel() {
+            var i;
+            var x = document.getElementsByClassName("mySlides");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            myIndex++;
+            if (myIndex > x.length) { myIndex = 1 }
+            x[myIndex - 1].style.display = "block";
+            setTimeout(carousel, 2000);
+        }
+    </script>
+</body>
+</html>
