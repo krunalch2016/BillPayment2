@@ -218,6 +218,7 @@
     <Compile Include="Controllers\PaymentMVCController.cs" />
     <Compile Include="Controllers\PaymentWebController.cs" />
     <Compile Include="Controllers\ReportApiController.cs" />
+    <Compile Include="Controllers\ReportMVCController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DAL\PaymentDAL.cs" />
     <Compile Include="DAL\ReportDAL.cs" />
@@ -373,7 +374,7 @@
     <Content Include="Views\PaymentMVC\AboutUs.cshtml" />
     <Content Include="Views\PaymentMVC\ContactUs.cshtml" />
     <Content Include="Views\PaymentMVC\ErrorView.cshtml" />
-    <Content Include="Views\PaymentMVC\ReportView.cshtml" />
+    <Content Include="Views\ReportMVC\ReportView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

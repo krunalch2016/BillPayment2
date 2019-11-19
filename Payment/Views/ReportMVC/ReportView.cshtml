@@ -1,0 +1,94 @@
+﻿@using System.Collections;
+@model Payment.Models.LoginModel
+@{
+    ViewBag.Title = "ReportView";
+    Layout = "~/Views/Shared/_LayoutPrePaid.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .txtbox {
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 8px 20px 8px 25px;
+        }
+
+        #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            if (sessionStorage.MobileID) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:52960/api/ReportApi/GetReport",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: {},
+
+                    success: function (data) {
+                        if (data != null) {
+                            var headers = "<tr>" +
+                                "<th>" + "Customer Name" +
+                                "</th>" +
+                                "<th>" + "Mobile Number" + "</th>" +
+                                "<th>" + "Plan Type" + "</th>" +
+                                "<th>" + "Operator" + "</th>" +
+                                "<th>" + "Amount" + "</th>" +
+                                "</tr>";
+                            $('#tblUsers tbody').append(headers);
+                            $.each(data, function (i, details) {
+                                var rows = "<tr>"
+                                    + "<td >" + details.CustomerName + "</td>"
+                                    + "<td >" + details.MobileNumber + "</td>"
+                                    + "<td >" + details.Amount + "</td>"
+                                    + "<td >" + details.Operator + "</td>"
+                                    + "<td >" + details.PlanType + "</td>"
+                                    + "</tr>";
+                                //var button = $("<button>90</button>");
+                                $('#tblUsers tbody').append(rows);
+                            });
+                        }
+                        else {
+                            alert("FAIL")
+                        }
+                        //$('#tblUsers rows').append(button);
+
+
+                    },
+                    error: function (data) {
+                        alert("Error");
+                    }
+                });
+            }
+            else {
+                $(location).attr('href', 'http://localhost:52960/PaymentMVC/Login');
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+</body>
+</html>
