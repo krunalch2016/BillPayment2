@@ -54,6 +54,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="paytm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\paytm.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -251,6 +255,8 @@
       <DependentUpon>BillPayment.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PaymentModel.cs" />
+    <Compile Include="Models\PaytmModel.cs" />
+    <Compile Include="Models\PaytmResponse.cs" />
     <Compile Include="Models\PostPaid.cs">
       <DependentUpon>BillPayment.tt</DependentUpon>
     </Compile>
@@ -275,6 +281,7 @@
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utilities\PaymentMethods.cs" />
+    <Compile Include="Utilities\PaytmKeys.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -375,6 +382,9 @@
     <Content Include="Views\PaymentMVC\ContactUs.cshtml" />
     <Content Include="Views\PaymentMVC\ErrorView.cshtml" />
     <Content Include="Views\ReportMVC\ReportView.cshtml" />
+    <Content Include="Views\PaymentMVC\LPGPayment.cshtml" />
+    <Content Include="Views\PaymentMVC\PaytmPayment.cshtml" />
+    <Content Include="Views\PaymentMVC\PaytmResponse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

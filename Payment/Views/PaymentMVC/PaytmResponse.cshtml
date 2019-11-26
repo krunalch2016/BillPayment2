@@ -1,0 +1,78 @@
+﻿@model Payment.Models.PaytmResponse
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Paytm Response</title>
+</head>
+<body>
+    <div>
+        <table>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.MID)</td>
+                <td> @Html.DisplayFor(x => x.MID)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.ORDERID)</td>
+                <td> @Html.DisplayFor(x => x.ORDERID)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.TXNAMOUNT)</td>
+                <td> @Html.DisplayFor(x => x.TXNAMOUNT)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.CURRENCY)</td>
+                <td> @Html.DisplayFor(x => x.CURRENCY)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.TXNID)</td>
+                <td> @Html.DisplayFor(x => x.TXNID)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.BANKTXNID)</td>
+                <td> @Html.DisplayFor(x => x.BANKTXNID)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.STATUS)</td>
+                <td> @Html.DisplayFor(x => x.STATUS)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.RESPONSE)</td>
+                <td> @Html.DisplayFor(x => x.RESPONSE)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.RESPMSG)</td>
+                <td> @Html.DisplayFor(x => x.RESPMSG)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.TXNDATE)</td>
+                <td> @Html.DisplayFor(x => x.TXNDATE)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.GATEWAYNAME)</td>
+                <td> @Html.DisplayFor(x => x.GATEWAYNAME)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.BANKNAME)</td>
+                <td> @Html.DisplayFor(x => x.BANKNAME)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.PAYMENTMODE)</td>
+                <td> @Html.DisplayFor(x => x.PAYMENTMODE)</td>
+            </tr>
+            <tr>
+                <td> @Html.DisplayNameFor(x => x.CHECKSUMHASH)</td>
+                <td> @Html.DisplayFor(x => x.CHECKSUMHASH)</td>
+            </tr>
+        </table>
+        <br/>
+        <br/>
+        <a href="http://localhost:52960/PaymentMVC/LPGPayment">Go Back</a>
+    </div>
+</body>
+</html>

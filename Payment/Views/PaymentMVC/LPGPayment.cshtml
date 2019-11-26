@@ -1,0 +1,94 @@
+﻿@model Payment.Models.PaytmModel
+@{
+    ViewBag.Title = "LPG Payment";
+    Layout = "~/Views/Shared/_LayoutPrePaid.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LPG Payment</title>
+    <style>
+
+        .txtbox {
+            width: 100%;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            padding: 8px 20px 8px 25px;
+        }
+
+        #submit {
+            background-color: purple;
+            border: none;
+            color: white;
+            padding: 14px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script type="text/javascript" src="~/Scripts/Validation.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (sessionStorage.MobileID) {
+
+            }
+            else {
+                $(location).attr('href', 'http://localhost:52960/PaymentMVC/Login');
+
+            }
+        });
+
+    </script>
+</head>
+<body>
+    <div>
+        <h1 style="font-size:26px;">LPG Payment</h1><br />
+        @using (Html.BeginForm("MakeLPGPayment", "PaymentMVC", FormMethod.Post))
+        {
+            <center>
+                <table>
+                    <tr>
+                        <td>LPG Number:</td>
+                        <td><input type="text" id="LPGNumber" name="LPGNumber" value="" /></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            Mobile Number:
+                        </td>
+                        <td><input type="text" id="mobileNumber" name="mobileNumber" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><input type="text" id="email" name="email" value="" /></td>
+
+                    </tr>
+                    <tr>
+                        <td>Amount:</td>
+                        <td><input type="text" id="amount" name="amount" value="" /></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="submit" id="submit" value="Pay Now" />
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        }
+    </div>
+</body>
+</html>
+

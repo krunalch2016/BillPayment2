@@ -35,7 +35,7 @@ namespace Payment.Controllers
         }
 
         public ActionResult Payment(PaymentModel modelobj)
-        
+
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Payment.Controllers
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
 
             {
                 logger.Info(ex.Message);
@@ -79,7 +79,7 @@ namespace Payment.Controllers
 
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Info(ex.Message);
                 logger.Debug(ex.Message);
@@ -89,7 +89,7 @@ namespace Payment.Controllers
 
         public ActionResult Register()
 
-        { 
+        {
             return View();
         }
 
@@ -102,7 +102,7 @@ namespace Payment.Controllers
                 PaymentBLL bllObj = new PaymentBLL();
                 int? Result = bllObj.LoginCustomer(loginObj);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Info(ex.Message);
                 logger.Debug(ex.Message);
@@ -131,7 +131,7 @@ namespace Payment.Controllers
                     preobj.PrepaidList = bllobj.Display(forms["dllOperator"]);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Info(ex.Message);
                 logger.Debug(ex.Message);
@@ -146,7 +146,7 @@ namespace Payment.Controllers
                 PaymentBLL bllObj = new PaymentBLL();
                 int? Result = bllObj.PostPaid(postObj);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.Info(ex.Message);
                 logger.Debug(ex.Message);
@@ -165,13 +165,78 @@ namespace Payment.Controllers
 
         public ActionResult ForgotPasswordView()
         {
-           
+
             return View();
         }
         public ActionResult ErrorView()
         {
             ViewBag.Error = "Error";
             return View();
+        }
+
+        public ActionResult LPGPayment()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult MakeLPGPayment(Payment.Models.PaytmModel data)
+        {
+            String merchantKey = Utilities.PaytmKeys.machinekey;
+            Dictionary<string, string> parameters = new Dictionary<string, string>();
+            Random random = new Random();
+            parameters.Add("MID", Utilities.PaytmKeys.machineId);
+            parameters.Add("CHANNEL_ID", Utilities.PaytmKeys.channelId);
+            parameters.Add("INDUSTRY_TYPE_ID", Utilities.PaytmKeys.indstrytype);
+            parameters.Add("WEBSITE", Utilities.PaytmKeys.website);
+            parameters.Add("EMAIL", data.email);
+            parameters.Add("MOBILE_NO", data.mobileNumber);
+            parameters.Add("CUST_ID", "1");
+            parameters.Add("ORDER_ID", random.Next().ToString());
+            parameters.Add("TXN_AMOUNT", data.amount);
+            parameters.Add("CALLBACK_URL", "http://localhost:52960/PaymentMVC/PaytmResponse"); //This parameter is not mandatory. Use this to pass the callback url dynamically.
+
+            string checksum = paytm.CheckSum.generateCheckSum(merchantKey, parameters);
+
+            string paytmURL = "https://securegw-stage.paytm.in/theia/processTransaction?orderid=" + parameters.FirstOrDefault(x => x.Key == "ORDER_ID").Value;
+
+            PaytmOutput(parameters, paytmURL, checksum);
+
+            return View("PaytmPayment");
+        }
+
+        public void PaytmOutput(Dictionary<string, string> parameters, string paytmURL, string checksum)
+        {
+            string outputHTML = "<html>";
+            outputHTML += "<head>";
+            outputHTML += "<title>Merchant Check Out Page</title>";
+            outputHTML += "</head>";
+            outputHTML += "<body>";
+            outputHTML += "<center><h1>Please do not refresh this page...</h1></center>";
+            outputHTML += "<form method='post' action='" + paytmURL + "' name='f1'>";
+            outputHTML += "<table border='1'>";
+            outputHTML += "<tbody>";
+            foreach (string key in parameters.Keys)
+            {
+                outputHTML += "<input type='hidden' name='" + key + "' value='" + parameters[key] + "'>";
+            }
+            outputHTML += "<input type='hidden' name='CHECKSUMHASH' value='" + checksum + "'>";
+            outputHTML += "</tbody>";
+            outputHTML += "</table>";
+            outputHTML += "<script type='text/javascript'>";
+            outputHTML += "document.f1.submit();";
+            outputHTML += "</script>";
+            outputHTML += "</form>";
+            outputHTML += "</body>";
+            outputHTML += "</html>";
+
+            ViewBag.htmlData = outputHTML;
+        }
+
+        [HttpPost]
+        public ActionResult PaytmResponse(Payment.Models.PaytmResponse data)
+        {
+            return View("PaytmResponse", data);
         }
     }
 }
