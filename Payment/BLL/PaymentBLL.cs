@@ -19,11 +19,11 @@ namespace Payment.BLL
         public int? MakePayment(PaymentModel paymentModel)
         {
             return dalObj.MakePayment(paymentModel);
-        }       
+        }
 
         public int? RegisterCustomerData(RegisterModel Registerobj)
         {
-            return dalObj.RegisterCustomerData(Registerobj); 
+            return dalObj.RegisterCustomerData(Registerobj);
         }
         public int? LoginCustomer(LoginModel loginobj)
         {
@@ -39,7 +39,7 @@ namespace Payment.BLL
         {
             return dalObj.PostPaid(postobj);
         }
-        public int? CheckNumber(long MobileNumber,string Operator)
+        public int? CheckNumber(long MobileNumber, string Operator)
         {
             return dalObj.CheckNumber(MobileNumber, Operator);
         }
@@ -51,6 +51,10 @@ namespace Payment.BLL
         public int? LoginVerify(long MobileNumber)
         {
             return dalObj.LoginVerify(MobileNumber);
+        }
+        public int? SavePaytmRecord(long regMobileNumber, long mobileNumber, decimal amount, string operatorName, string planType)
+        {
+            return dalObj.SavePaytmRecord(regMobileNumber, mobileNumber, amount, operatorName, planType);
         }
     }
 }

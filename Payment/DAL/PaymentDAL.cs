@@ -270,5 +270,29 @@ namespace Payment.DAL
                 return null;
             }
         }
+
+        public int? SavePaytmRecord(long regMobileNumber, long mobileNumber, decimal amount, string operatorName, string planType)
+        {
+            try
+            {
+                using (var paymentEntities = new BillPaymentEntities())
+                {
+                    var userTxn = new User_Transaction();
+                    userTxn.CustomerName = paymentEntities.table_Registration.Where(x => x.MobileNumber == regMobileNumber).FirstOrDefault().CustomerName;
+                    userTxn.MobileNumber = regMobileNumber;
+                    userTxn.Amount = amount;
+                    userTxn.Operator = operatorName;
+                    userTxn.PlantType = planType;
+                    paymentEntities.User_Transaction.Add(userTxn);
+                    paymentEntities.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                return null;
+            }
+            return 1;
+        }
     }
 }

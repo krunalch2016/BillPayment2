@@ -7,7 +7,6 @@ using Payment.Models;
 using Payment.BLL;
 using log4net;
 
-
 namespace Payment.Controllers
 {
     public class PaymentMVCController : Controller
@@ -236,6 +235,11 @@ namespace Payment.Controllers
         [HttpPost]
         public ActionResult PaytmResponse(Payment.Models.PaytmResponse data)
         {
+            PaymentBLL bllobj = new PaymentBLL();
+            if (data.STATUS.Equals("TXN_SUCCESS"))
+                bllobj.SavePaytmRecord(RegisterModel.MobileNum, Convert.ToInt32(data.ORDERID), Convert.ToDecimal(data.TXNAMOUNT), "LPG [Success]", data.PAYMENTMODE);
+            else
+                bllobj.SavePaytmRecord(RegisterModel.MobileNum, Convert.ToInt32(data.ORDERID), Convert.ToDecimal(data.TXNAMOUNT) * -1, "LPG [Fail]", data.PAYMENTMODE);
             return View("PaytmResponse", data);
         }
     }
